@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tony Reyes | AI Solutions and VA Support</title>
+<meta name="description" content="Freelance AI solutions and VA support for small businesses. I find the slowest part of your week and fix it with AI and automation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#000; --mute:#525252; --line:rgba(0,0,0,.1); --dark:#0a0a0a; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin:0; font-family:'Inter',system-ui,sans-serif; color:var(--ink); background:#fff; line-height:1.5; letter-spacing:-0.02em; }
+  a { color:inherit; }
+  :focus-visible { outline:2px solid #000; outline-offset:3px; }
+  footer :focus-visible { outline-color:#fff; }
+  .wrap { max-width:1100px; margin:0 auto; padding:0 24px; }
+  .mono { font-family:'Space Mono',monospace; font-size:14px; text-transform:uppercase; letter-spacing:.1em; color:var(--mute); }
+  header { position:sticky; top:0; background:rgba(255,255,255,.92); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); z-index:10; }
+  header .wrap { display:flex; justify-content:space-between; align-items:center; height:64px; }
+  header strong { font-size:20px; letter-spacing:-0.05em; }
+  nav a { margin-left:24px; text-decoration:none; font-size:15px; padding:12px 0; display:inline-block; }
+  nav a:hover { text-decoration:underline; }
+  h1 { font-size:clamp(40px,8vw,104px); line-height:.95; letter-spacing:-0.05em; margin:0; font-weight:700; }
+  h2 { font-size:clamp(32px,5vw,56px); line-height:1; letter-spacing:-0.05em; margin:0 0 40px; font-weight:700; }
+  section { padding:96px 0; }
+  .hero { padding:120px 0 96px; }
+  .hero p.sub { font-size:clamp(18px,2.4vw,24px); color:var(--mute); margin:32px 0 40px; max-width:640px; }
+  .btn { display:inline-block; padding:16px 28px; border:1px solid #000; border-radius:999px; text-decoration:none; font-weight:700; margin:0 12px 12px 0; transition:all .5s cubic-bezier(.16,1,.3,1); }
+  .btn.solid { background:#000; color:#fff; }
+  .btn:hover { background:#000; color:#fff; }
+  .btn.solid:hover { background:#fff; color:#000; }
+  .rise { opacity:0; transform:translateY(24px); animation:rise 1s cubic-bezier(.16,1,.3,1) forwards; }
+  @keyframes rise { to { opacity:1; transform:none; } }
+  .services { padding:0; margin:0; border-bottom:1px solid var(--line); }
+  .services li { list-style:none; display:grid; grid-template-columns:64px 1fr; gap:16px; padding:24px 0; border-top:1px solid var(--line); font-size:clamp(20px,3vw,32px); letter-spacing:-0.04em; font-weight:700; }
+  .services .mono { padding-top:10px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px; }
+  .card { border:1px solid var(--line); border-radius:40px 8px 40px 8px; padding:32px; display:flex; flex-direction:column; min-height:280px; transition:background .5s cubic-bezier(.16,1,.3,1), color .5s cubic-bezier(.16,1,.3,1); }
+  .card:hover { background:#000; color:#fff; }
+  .card:hover .mono, .card:hover p { color:#d4d4d4; }
+  .card h3 { font-size:32px; line-height:1; letter-spacing:-0.05em; margin:16px 0; }
+  .card p { color:var(--mute); margin:0 0 auto; }
+  .card a { margin-top:24px; font-weight:700; }
+  .card .tag { margin-top:24px; }
+  .steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:32px; counter-reset:s; padding:0; margin:0; list-style:none; }
+  .steps li { border-top:1px solid #000; padding-top:16px; font-size:22px; font-weight:700; letter-spacing:-0.04em; }
+  .steps li::before { counter-increment:s; content:"0" counter(s); display:block; font-family:'Space Mono',monospace; font-size:14px; color:var(--mute); margin-bottom:8px; }
+  footer { background:var(--dark); color:#fff; padding:96px 0 32px; }
+  footer h2 { color:#fff; margin-bottom:32px; }
+  footer .mono { color:#a3a3a3; }
+  footer .big { font-size:clamp(20px,3vw,28px); margin:8px 0; }
+  footer .bar { margin-top:80px; border-top:1px solid rgba(255,255,255,.1); padding-top:24px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; font-size:14px; color:#a3a3a3; }
+  @media (prefers-reduced-motion: reduce) { .rise { animation:none; opacity:1; transform:none; } html { scroll-behavior:auto; } * { transition:none !important; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <strong>Tony Reyes</strong>
+    <nav aria-label="Main">
+      <a href="#work">Work</a><a href="#services">Services</a><a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <p class="mono rise">Freelance AI solutions and VA support</p>
+      <h1 class="rise" style="animation-delay:.1s">I find the slowest part of your week and fix it with AI and automation.</h1>
+      <p class="sub rise" style="animation-delay:.2s">Freelance AI solutions and VA support for small businesses.</p>
+      <div class="rise" style="animation-delay:.3s">
+        <a class="btn solid" href="#work">See my work</a>
+        <a class="btn" href="#contact">Tell me what slows you down</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="wrap">
+      <h2>What I fix</h2>
+      <ul class="services">
+        <li><span class="mono">01</span><span>Inbox and customer messages that pile up</span></li>
+        <li><span class="mono">02</span><span>Manual data entry and spreadsheets</span></li>
+        <li><span class="mono">03</span><span>Scheduling, reminders and follow-ups</span></li>
+        <li><span class="mono">04</span><span>Repetitive reports and documents</span></li>
+        <li><span class="mono">05</span><span>Websites and booking or payment pages</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="wrap">
+      <h2>Work</h2>
+      <div class="grid">
+        <article class="card">
+          <span class="mono">Website · 2026</span>
+          <h3>AniCa Happy Nest Campsite</h3>
+          <p>A booking website for a campsite on Lumot Lake. Final touches in progress.</p>
+          <a href="https://anica-happynest-notion.vercel.app" target="_blank" rel="noopener">View site →</a>
+        </article>
+        <article class="card">
+          <span class="mono">Website · 2026</span>
+          <h3>Core &amp; Kinetic</h3>
+          <p>A solar company website with a load calculator that recommends a system size.</p>
+          <a href="https://thonysm-dev.github.io/Core-Kinetic/" target="_blank" rel="noopener">View site →</a>
+        </article>
+        <article class="card">
+          <span class="mono">Online store · 2026</span>
+          <h3>Kromati</h3>
+          <p>A print-on-demand store. Launching soon.</p>
+          <span class="mono tag">Not live yet</span>
+        </article>
+        <article class="card">
+          <span class="mono">My own project · 2026</span>
+          <h3>AI setup cleanup</h3>
+          <p>Audited my own AI toolkit, archived 73 unused tools and kept the 23 I use.</p>
+        </article>
+        <article class="card">
+          <span class="mono">My own project · 2026</span>
+          <h3>Cost-saving AI router</h3>
+          <p>A local router that sends routine text jobs to cheaper AI models.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>How I work</h2>
+      <ol class="steps">
+        <li>You describe the problem.</li>
+        <li>I reply with a plan and a fixed price for that project.</li>
+        <li>I build it and send a short update every week.</li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <h2>Tell me what slows you down.</h2>
+    <p class="mono">Email</p>
+    <p class="big"><a href="mailto:mrtonysy@gmail.com">mrtonysy@gmail.com</a></p>
+    <p class="mono" style="margin-top:32px">LinkedIn</p>
+    <p class="big"><a href="https://www.linkedin.com/in/anthony-reyes-294983432/" target="_blank" rel="noopener">linkedin.com/in/anthony-reyes-294983432</a></p>
+    <div class="bar"><span>Tony Reyes</span><span>© 2026</span></div>
+  </div>
+</footer>
+</body>
+</html>
