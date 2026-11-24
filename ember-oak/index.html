@@ -1,0 +1,470 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ember &amp; Oak | Specialty Coffee Subscription</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500;1,6..72,600&amp;display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ground: '#EFE9DD',
+                        ground2: '#E5DED0',
+                        ink: '#141C2B',
+                        ink2: '#4A5364',
+                        muted: '#767E8C',
+                        inkblue: '#2C4A8F',
+                        hairline: 'rgba(20,28,43,.16)'
+                    },
+                    fontFamily: {
+                        display: ['Newsreader', 'serif'],
+                        mono: ['"Courier Prime"', 'monospace']
+                    },
+                    letterSpacing: {
+                        tightest: '-.02em',
+                        widest: '.1em',
+                        wider: '.07em'
+                    },
+                    lineHeight: {
+                        loose: '1.9'
+                    },
+                    animation: {
+                        'draw': 'draw 1.5s ease-out forwards',
+                        'fade-in': 'fadeIn 1s ease-out forwards',
+                        'slide-up': 'slideUp 0.8s ease-out forwards'
+                    },
+                    keyframes: {
+                        draw: {
+                            '0%': { strokeDasharray: '0, 1000' },
+                            '100%': { strokeDasharray: '1000, 1000' }
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #EFE9DD;
+            color: #141C2B;
+            font-family: 'Newsreader', serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .font-mono {
+            font-family: 'Courier Prime', monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            line-height: 1.9;
+            text-transform: uppercase;
+        }
+
+        .text-body-mono {
+            font-family: 'Courier Prime', monospace;
+            font-size: 12px;
+            letter-spacing: 0.07em;
+            line-height: 1.9;
+        }
+
+        /* Traveling Product CSS */
+        @media (prefers-reduced-motion: no-preference) {
+            #traveling-product {
+                position: fixed;
+                top: 50%;
+                left: 65%;
+                transform: translate(-50%, -50%);
+                width: 300px;
+                height: 450px;
+                z-index: 30;
+                pointer-events: none;
+                transition: opacity 0.3s ease;
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            #traveling-product {
+                display: none;
+            }
+        }
+
+        /* SVG path drawing */
+        .path-draw {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+        }
+        .is-inview .path-draw {
+            animation: drawline 2s ease-out forwards;
+        }
+        @keyframes drawline {
+            from { stroke-dashoffset: 1000; }
+            to { stroke-dashoffset: 0; }
+        }
+
+        /* Scroll animations */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Wordmark clipping */
+        .wordmark-container {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        
+        /* Custom selection */
+        ::selection {
+            background: #2C4A8F;
+            color: #EFE9DD;
+        }
+
+        /* Hairline borders */
+        .border-hairline {
+            border-color: rgba(20,28,43,.16);
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen bg-ground relative overflow-x-hidden flex flex-col" data-sd-id="1">
+
+        <!-- Navigation -->
+        <nav class="fixed top-0 left-0 right-0 z-40 bg-ground border-b border-hairline py-4 px-6 md:px-12 flex justify-between items-center mix-blend-multiply backdrop-blur-sm bg-opacity-90" data-sd-id="2">
+            <div class="font-display font-medium text-xl tracking-tightest" data-sd-id="3">E&amp;O</div>
+            <div class="flex gap-8 font-mono text-ink2" data-sd-id="4">
+                <a id="nav-roast-link" href="#roast" class="hover:text-ink transition-colors" data-sd-id="5">The Roast</a>
+                <a id="nav-plans-link" href="#plans" class="hover:text-ink transition-colors" data-sd-id="6">Plans</a>
+                <a id="nav-signin-link" href="#login" class="hover:text-ink transition-colors" data-sd-id="7">Sign In</a>
+            </div>
+            <button class="font-mono border border-ink px-6 py-2 hover:bg-ink hover:text-ground transition-colors" data-sd-id="8">Subscribe</button>
+        </nav>
+
+        <!-- Traveling Product (SVG placeholder) -->
+        <div id="traveling-product" class="hidden md:block" data-sd-id="9">
+            <svg viewBox="0 0 300 450" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full drop-shadow-2xl" data-sd-id="10">
+                <path d="M40 50 L260 50 L280 400 C280 420 260 430 240 430 L60 430 C40 430 20 420 20 400 Z" fill="#E5DED0" stroke="#141C2B" stroke-width="2"></path>
+                <path d="M40 50 L260 50 L260 90 L40 90 Z" fill="#141C2B"></path>
+                <rect x="80" y="150" width="140" height="180" fill="#EFE9DD" stroke="#141C2B" stroke-width="1"></rect>
+                <text x="150" y="210" font-family="Newsreader" font-size="24" text-anchor="middle" fill="#141C2B">Ember</text>
+                <text x="150" y="240" font-family="Newsreader" font-size="24" text-anchor="middle" fill="#141C2B">&amp; Oak</text>
+                <text id="bag-roast" x="150" y="280" font-family="Courier Prime" font-size="10" text-anchor="middle" fill="#4A5364" letter-spacing="0.1em">ROAST: AMBER</text>
+            </svg>
+        </div>
+
+        <!-- Hero Section -->
+        <section id="hero" class="min-h-screen pt-32 pb-0 px-6 md:px-12 flex flex-col justify-between relative overflow-hidden border-b border-hairline" data-sd-id="11">
+            <div class="max-w-xl animate-fade-in" data-sd-id="12">
+                <h1 class="font-display font-medium text-6xl md:text-8xl tracking-tightest leading-none mb-8" data-sd-id="13">
+                    Draw your <span class="text-inkblue italic font-normal" data-sd-id="14">roast.</span>
+                </h1>
+                <p class="text-body-mono text-ink2 mb-12 max-w-md" data-sd-id="15">
+                    Choose a continuous roast level from blonde to char. We roast every order exactly to your setting. No batches, no compromise.
+                </p>
+                <div class="flex gap-4" data-sd-id="16">
+                    <button class="w-32 h-32 bg-ink text-ground font-mono flex flex-col justify-center items-center hover:bg-ink2 transition-colors" data-sd-id="17">
+                        <span class="mb-2" data-sd-id="18">Start</span>
+                        <iconify-icon icon="ph:arrow-right-light" class="text-xl"></iconify-icon>
+                    </button>
+                    <button class="w-32 h-32 border border-ink text-ink font-mono flex flex-col justify-center items-center hover:bg-ground2 transition-colors" data-sd-id="19">
+                        <span class="mb-2" data-sd-id="20">Learn</span>
+                        <iconify-icon icon="ph:book-open-light" class="text-xl"></iconify-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <div class="mt-16 border-t border-hairline pt-4 flex flex-col md:flex-row gap-8 font-mono text-muted" data-sd-id="21">
+                    <div data-sd-id="22">SOURCE / <span class="text-ink" data-sd-id="23">TBC</span></div>
+                    <div data-sd-id="24">PROCESS / <span class="text-ink" data-sd-id="25">TBC</span></div>
+                    <div data-sd-id="26">ALTITUDE / <span class="text-ink" data-sd-id="27">TBC</span></div>
+                </div>
+                <!-- Spread wordmark: letters spread apart and sink on scroll -->
+                <div id="hero-wordmark" class="-mx-6 md:-mx-12 mt-6 flex justify-between font-display text-ink text-[14vw] leading-none tracking-tightest select-none pointer-events-none" style="transform: translateY(22%)" aria-hidden="true">
+                    <span>E</span><span>M</span><span>B</span><span>E</span><span>R</span><span>&amp;</span><span>O</span><span>A</span><span>K</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Argument Section -->
+        <section id="roast" class="py-24 px-6 md:px-12 bg-ground2 border-b border-hairline" data-sd-id="28">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 max-w-6xl mx-auto" data-sd-id="29">
+                <div data-sd-id="30">
+                    <h2 class="font-display text-4xl tracking-tightest mb-8 reveal-on-scroll" data-sd-id="31">Control is flavor.</h2>
+                    <div class="space-y-6 text-body-mono text-ink2 reveal-on-scroll" data-sd-id="32">
+                        <p data-sd-id="33">Supermarket beans are roasted for shelf life, not peak flavor. Mass-market subscriptions lock you into light, medium, or dark.</p>
+                        <p data-sd-id="34">We built a different model. You control the dial. We execute the curve.</p>
+                    </div>
+                </div>
+                <div class="border-t border-hairline reveal-on-scroll" data-sd-id="35">
+                    <div class="py-4 border-b border-hairline flex justify-between font-mono" data-sd-id="36">
+                        <span class="text-muted" data-sd-id="37">01</span>
+                        <span data-sd-id="38">Dial your roast level</span>
+                    </div>
+                    <div class="py-4 border-b border-hairline flex justify-between font-mono" data-sd-id="39">
+                        <span class="text-muted" data-sd-id="40">02</span>
+                        <span data-sd-id="41">Roasted to order</span>
+                    </div>
+                    <div class="py-4 border-b border-hairline flex justify-between font-mono" data-sd-id="42">
+                        <span class="text-muted" data-sd-id="43">03</span>
+                        <span data-sd-id="44">Rested and shipped</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Demonstration Section -->
+        <section class="py-24 px-6 md:px-12 border-b border-hairline" id="demo-section" data-sd-id="45">
+            <div class="max-w-5xl mx-auto" data-sd-id="46">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-12 border-b border-hairline pb-4 reveal-on-scroll" data-sd-id="47">
+                    <h2 class="font-display text-4xl tracking-tightest" data-sd-id="48">The Profile</h2>
+                    <div class="flex gap-4 font-mono mt-6 md:mt-0" role="group" aria-label="Roast level" data-sd-id="49">
+                        <button class="hover:text-ink transition-colors pb-1 border-b border-transparent hover:border-ink aria-pressed:border-ink aria-pressed:text-ink text-muted" aria-pressed="false" onclick="updateRoast('blonde', this)" data-sd-id="50">Blonde</button>
+                        <button class="hover:text-ink transition-colors pb-1 border-b border-transparent hover:border-ink aria-pressed:border-ink aria-pressed:text-ink text-muted" aria-pressed="true" onclick="updateRoast('amber', this)" data-sd-id="51">Amber</button>
+                        <button class="hover:text-ink transition-colors pb-1 border-b border-transparent hover:border-ink aria-pressed:border-ink aria-pressed:text-ink text-muted" aria-pressed="false" onclick="updateRoast('ember', this)" data-sd-id="52">Ember</button>
+                        <button class="hover:text-ink transition-colors pb-1 border-b border-transparent hover:border-ink aria-pressed:border-ink aria-pressed:text-ink text-muted" aria-pressed="false" onclick="updateRoast('char', this)" data-sd-id="53">Char</button>
+                    </div>
+                </div>
+
+                <!-- SVG Graph Area -->
+                <div class="relative h-[400px] w-full border border-hairline bg-ground2 mb-12 p-6 reveal-on-scroll" data-sd-id="54">
+                    <!-- Grid lines -->
+                    <div class="absolute inset-0 flex flex-col justify-between p-6 pointer-events-none opacity-20" data-sd-id="55">
+                        <div class="border-b border-ink w-full" data-sd-id="56"></div>
+                        <div class="border-b border-ink w-full" data-sd-id="57"></div>
+                        <div class="border-b border-ink w-full" data-sd-id="58"></div>
+                        <div class="border-b border-ink w-full" data-sd-id="59"></div>
+                    </div>
+                    
+                    <svg viewBox="0 0 1000 400" preserveAspectRatio="xMidYMid meet" class="w-full h-full overflow-visible" id="chart-svg" data-sd-id="60">
+                        <!-- First Crack Marker -->
+                        <line x1="600" y1="0" x2="600" y2="400" stroke="rgba(20,28,43,.16)" stroke-width="1" stroke-dasharray="4 4"></line>
+                        <text x="610" y="20" font-family="Courier Prime" font-size="12" fill="#767E8C" letter-spacing="0.1em">FIRST CRACK</text>
+                        
+                        <!-- Base Curve (Drawn on entry) -->
+                        <path id="roast-curve" pathLength="1000" d="M 0 350 Q 200 350, 400 200 T 800 50" fill="none" stroke="#2C4A8F" stroke-width="2" class="path-draw"></path>
+                        
+                        <!-- Drop Point Marker -->
+                        <circle id="drop-point" cx="800" cy="50" r="4" fill="#2C4A8F" class="opacity-0 transition-opacity duration-1000 delay-1000"></circle>
+                        <line id="drop-line" x1="800" y1="50" x2="800" y2="400" stroke="#2C4A8F" stroke-width="1" stroke-dasharray="2 2" class="opacity-0 transition-opacity duration-1000 delay-1000"></line>
+                    </svg>
+                    
+                    <!-- Axis Labels -->
+                    <div class="absolute bottom-2 right-6 font-mono text-[9px] text-muted" data-sd-id="61">TIME</div>
+                    <div class="absolute top-6 left-2 font-mono text-[9px] text-muted origin-bottom-left -rotate-90" data-sd-id="62">TEMP</div>
+                </div>
+
+                <!-- Facts -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 border-t border-hairline pt-6 reveal-on-scroll" data-sd-id="63">
+                    <div data-sd-id="64">
+                        <div class="font-mono text-muted mb-2" data-sd-id="65">DROP TEMP</div>
+                        <div class="font-display text-2xl" id="fact-temp" data-sd-id="66">204°C</div>
+                    </div>
+                    <div data-sd-id="67">
+                        <div class="font-mono text-muted mb-2" data-sd-id="68">DROP TIME</div>
+                        <div class="font-display text-2xl" id="fact-time" data-sd-id="69">10:45</div>
+                    </div>
+                    <div data-sd-id="70">
+                        <div class="font-mono text-muted mb-2" data-sd-id="71">DEVELOPMENT</div>
+                        <div class="font-display text-2xl" id="fact-dev" data-sd-id="72">14%</div>
+                    </div>
+                    <div class="md:col-span-1" data-sd-id="73">
+                        <div class="font-mono text-muted mb-2" data-sd-id="74">NOTES</div>
+                        <div class="text-body-mono text-ink" id="fact-notes" data-sd-id="75">Caramelized sugar, bright acidity.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Plans Section -->
+        <section id="plans" class="py-24 px-6 md:px-12 bg-ground2 border-b border-hairline" data-sd-id="76">
+            <div class="max-w-4xl mx-auto" data-sd-id="77">
+                <h2 class="font-display text-4xl tracking-tightest mb-16 text-center reveal-on-scroll" data-sd-id="78">The Ledger</h2>
+                
+                <div class="border-t border-hairline reveal-on-scroll" data-sd-id="79">
+                    <!-- Plan 1 -->
+                    <div class="py-8 border-b border-hairline flex flex-col md:flex-row justify-between md:items-center gap-6 group hover:bg-ground transition-colors -mx-6 px-6" data-sd-id="80">
+                        <div class="flex-1" data-sd-id="81">
+                            <h3 class="font-display text-2xl mb-2" data-sd-id="82">The Weekly</h3>
+                            <div class="font-mono text-muted" data-sd-id="83">250G / EVERY 7 DAYS</div>
+                        </div>
+                        <div class="font-mono text-ink2" data-sd-id="84">PRICE TBC</div>
+                        <a id="plan-weekly-choose-link" href="#subscribe" class="font-mono border border-ink px-6 py-2 text-center group-hover:bg-ink group-hover:text-ground transition-colors" data-sd-id="85">Choose</a>
+                    </div>
+                    
+                    <!-- Plan 2 -->
+                    <div class="py-8 border-b border-hairline flex flex-col md:flex-row justify-between md:items-center gap-6 group hover:bg-ground transition-colors -mx-6 px-6" data-sd-id="86">
+                        <div class="flex-1" data-sd-id="87">
+                            <h3 class="font-display text-2xl mb-2" data-sd-id="88">The Fortnightly</h3>
+                            <div class="font-mono text-muted" data-sd-id="89">250G / EVERY 14 DAYS</div>
+                        </div>
+                        <div class="font-mono text-ink2" data-sd-id="90">PRICE TBC</div>
+                        <a id="plan-fortnightly-choose-link" href="#subscribe" class="font-mono border border-ink px-6 py-2 text-center group-hover:bg-ink group-hover:text-ground transition-colors" data-sd-id="91">Choose</a>
+                    </div>
+
+                    <!-- Plan 3 -->
+                    <div class="py-8 border-b border-hairline flex flex-col md:flex-row justify-between md:items-center gap-6 group hover:bg-ground transition-colors -mx-6 px-6" data-sd-id="92">
+                        <div class="flex-1" data-sd-id="93">
+                            <h3 class="font-display text-2xl mb-2" data-sd-id="94">The Sampler</h3>
+                            <div class="font-mono text-muted" data-sd-id="95">3X 100G / MONTHLY</div>
+                        </div>
+                        <div class="font-mono text-ink2" data-sd-id="96">PRICE TBC</div>
+                        <a id="plan-sampler-choose-link" href="#subscribe" class="font-mono border border-ink px-6 py-2 text-center group-hover:bg-ink group-hover:text-ground transition-colors" data-sd-id="97">Choose</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="pt-24 pb-8 px-6 md:px-12 flex flex-col items-center relative overflow-hidden bg-ground" data-sd-id="98">
+            <h2 class="font-display text-3xl md:text-5xl tracking-tightest mb-24 reveal-on-scroll text-center z-10" data-sd-id="99">
+                Taste the <span class="text-inkblue italic" data-sd-id="100">difference.</span>
+            </h2>
+            
+            <div class="w-full flex justify-between font-mono text-muted border-t border-hairline pt-8 z-10" data-sd-id="101">
+                <div data-sd-id="102">© EMBER &amp; OAK</div>
+                <div class="flex gap-6" data-sd-id="103">
+                    <a id="footer-terms-link" href="#terms" class="hover:text-ink" data-sd-id="104">TERMS</a>
+                    <a id="footer-privacy-link" href="#privacy" class="hover:text-ink" data-sd-id="105">PRIVACY</a>
+                </div>
+            </div>
+
+            <!-- Spread Wordmark -->
+            <div class="absolute bottom-0 left-0 w-full overflow-hidden opacity-5 pointer-events-none select-none flex justify-between font-display text-[20vw] leading-none tracking-tightest" aria-hidden="true" id="footer-wordmark" data-sd-id="106">
+                <span data-sd-id="107">E</span><span data-sd-id="108">M</span><span data-sd-id="109">B</span><span data-sd-id="110">E</span><span data-sd-id="111">R</span><span data-sd-id="112">&amp;</span><span data-sd-id="113">O</span><span data-sd-id="114">A</span><span data-sd-id="115">K</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        // Simple scroll reveal
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal-on-scroll, #chart-svg');
+            
+            const revealOnScroll = () => {
+                const windowHeight = window.innerHeight;
+                const elementVisible = 100;
+
+                reveals.forEach((reveal) => {
+                    const elementTop = reveal.getBoundingClientRect().top;
+                    if (elementTop < windowHeight - elementVisible) {
+                        reveal.classList.add('is-visible');
+                        if (reveal.id === 'chart-svg') {
+                            reveal.classList.add('is-inview');
+                            setTimeout(() => {
+                                document.getElementById('drop-point').classList.remove('opacity-0');
+                                document.getElementById('drop-line').classList.remove('opacity-0');
+                            }, 1500);
+                        }
+                    }
+                });
+            };
+
+            window.addEventListener('scroll', revealOnScroll);
+            revealOnScroll(); // Trigger once on load
+
+            // Traveling Product Scroll Effect
+            const product = document.getElementById('traveling-product');
+            const hero = document.getElementById('hero');
+            const letters = document.querySelectorAll('#hero-wordmark span');
+            const clamp = (v) => Math.max(0, Math.min(1, v));
+
+            // The bag is bound to scroll position: it drifts down and turns across the hero,
+            // then is fully gone before the argument section so it never covers content.
+            const travel = () => {
+                const p = clamp(window.scrollY / (hero.offsetHeight * 0.85));
+                if (product) {
+                    const fade = 1 - clamp((p - 0.5) / 0.5);
+                    product.style.opacity = String(fade);
+                    product.style.visibility = fade === 0 ? 'hidden' : 'visible';
+                    product.style.transform = `translate(-50%, calc(-50% + ${p * 140}px)) rotate(${p * -7}deg) scale(${1 - p * 0.18})`;
+                }
+                // The hero wordmark spreads from the centre outward and sinks as the page leaves the hero.
+                const q = clamp(window.scrollY / hero.offsetHeight);
+                letters.forEach((l, i) => {
+                    l.style.transform = `translate(${(i - 4) * q * 60}px, ${q * 80}px)`;
+                });
+            };
+            window.addEventListener('scroll', travel, { passive: true });
+            travel();
+        });
+
+        // Roast Data
+        const roastData = {
+            blonde: {
+                path: 'M 0 350 Q 200 350, 400 200 T 650 120',
+                cx: 650, cy: 120,
+                temp: '198°C', time: '09:15', dev: '10%',
+                notes: 'Floral, tea-like, vibrant acidity.'
+            },
+            amber: {
+                path: 'M 0 350 Q 200 350, 400 200 T 800 50',
+                cx: 800, cy: 50,
+                temp: '204°C', time: '10:45', dev: '14%',
+                notes: 'Caramelized sugar, bright acidity.'
+            },
+            ember: {
+                path: 'M 0 350 Q 200 350, 400 200 T 900 30',
+                cx: 900, cy: 30,
+                temp: '212°C', time: '12:30', dev: '18%',
+                notes: 'Dark chocolate, heavy body, low acidity.'
+            },
+            char: {
+                path: 'M 0 350 Q 200 350, 400 200 T 980 10',
+                cx: 980, cy: 10,
+                temp: '220°C', time: '14:00', dev: '22%',
+                notes: 'Smoky, intense, bittersweet.'
+            }
+        };
+
+        // Update Roast Function
+        window.updateRoast = function(level, btn) {
+            // Update aria-pressed states
+            const buttons = btn.parentElement.querySelectorAll('button');
+            buttons.forEach(b => b.setAttribute('aria-pressed', 'false'));
+            btn.setAttribute('aria-pressed', 'true');
+
+            // Update data
+            const data = roastData[level];
+            
+            // Animate SVG path change
+            const path = document.getElementById('roast-curve');
+            path.style.transition = 'd 0.5s ease-out';
+            path.setAttribute('d', data.path);
+            
+            // Move marker
+            const point = document.getElementById('drop-point');
+            const line = document.getElementById('drop-line');
+            point.style.transition = 'cx 0.5s ease-out, cy 0.5s ease-out';
+            line.style.transition = 'x1 0.5s ease-out, x2 0.5s ease-out';
+            
+            point.setAttribute('cx', data.cx);
+            point.setAttribute('cy', data.cy);
+            line.setAttribute('x1', data.cx);
+            line.setAttribute('x2', data.cx);
+
+            // Update text (simple fade in/out could be added here)
+            document.getElementById('fact-temp').innerText = data.temp;
+            document.getElementById('fact-time').innerText = data.time;
+            document.getElementById('fact-dev').innerText = data.dev;
+            document.getElementById('fact-notes').innerText = data.notes;
+            document.getElementById('bag-roast').textContent = 'ROAST: ' + level.toUpperCase();
+        };
+    </script>
+
+</body></html>
